@@ -22,12 +22,15 @@ d = cmudict.dict()
 
 
 def nsyl(word):
-  return [len(list(y for y in x if y[-1].isdigit())) for x in d[word.lower()]]
+    try:
+        return [len(list(y for y in x if y[-1].isdigit())) for x in d[word.lower()]]
+    except:
+        return [0]
 
 
 def syllcount(phrase):
     n = []
-    phrase = [x for x in phrase if x not in string.punctuation]
+    phrase = [x for x in phrase if x not in (string.punctuation or string.whitespace or string.digits)]
     clean_message = ''.join(phrase)
     for w in clean_message.split(' '):
         n.append(nsyl(w)[0])
@@ -35,7 +38,7 @@ def syllcount(phrase):
 
 def word_length(phrase):
     n = []
-    phrase = [x for x in phrase if x not in string.punctuation]
+    phrase = [x for x in phrase if x not in (string.punctuation or string.whitespace or string.digits)]
     clean_message = ''.join(phrase)
     for w in clean_message.split(' '):
         n.append(len(w))

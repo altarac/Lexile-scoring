@@ -1,3 +1,5 @@
+# https://simple.wikipedia.org/wiki/Flesch_Reading_Ease
+# http://www.readabilityformulas.com/flesch-reading-ease-readability-formula.php
 import numpy as np
 import re
 import string
@@ -25,14 +27,23 @@ def word_length(phrase):
         n.append(len(w))
     return n
 
+def sentence_length(phrase):
+    n = []
+    phrase = phrase.split('.')
+    clean_message = ''.join(phrase)
+    for w in clean_message.split(' '):
+        n.append(len(w))
+    return np.mean(n)
+
+
+
+def LEXIE(phrase):
+    meansyll = np.mean(syllcount(phrase))
+    sl = sentence_length(phrase)
+    score = 206.835 - (1.015*sl)-(84.6*meansyll)
+    return score
+
 
 while True:
     phrase = input('phrase: ')
-    meansyll = np.mean(syllcount(phrase))
-    meanwordlen = np.mean(word_length(phrase))
-    print(syllcount(phrase))
-    print('average number of sylables: ' + str(meansyll))
-    print('average word length: ' + str(meanwordlen))
-    print('the number of words are: ' + str(len(phrase)))
-    score = (meanwordlen*meansyll)
-    print('the altarac score is: ' + str(score))
+    print('The Flesch Readability Score is: ' + str(LEXIE(phrase)))
